@@ -5,6 +5,7 @@
 package autonoma.PulgasLocas.models;
 
 import java.awt.Graphics;
+import java.awt.Image;
 
 /*
  * 
@@ -14,6 +15,7 @@ import java.awt.Graphics;
  */
 public abstract class Pulga {
     protected int x, y;
+    protected Image imagen;
 
     public Pulga(int x, int y) {
         this.x = x;
@@ -26,4 +28,14 @@ public abstract class Pulga {
 
     public int getX() { return x; }
     public int getY() { return y; }
+    
+    public void setX(int x) { this.x = x; }
+    public void setY(int y) { this.y = y; }
+    public boolean contienePunto(int px, int py) {
+        return estaViva() && px >= x && px <= x + 25 && py >= y && py <= y + 25;
+    }
+    public void moverAleatoriamente(int ancho, int alto) {
+        this.x = (int) (Math.random() * ancho);
+        this.y = (int) (Math.random() * alto);
+    }
 }

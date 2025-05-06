@@ -5,6 +5,7 @@
 package autonoma.PulgasLocas.models;
 
 import java.awt.Graphics;
+import javax.swing.ImageIcon;
 
 /*
  * 
@@ -18,11 +19,14 @@ public class PulgaNormal extends Pulga {
     public PulgaNormal(int x, int y) {
         super(x, y);
         this.viva = true;
+        this.imagen = new ImageIcon(getClass().getResource("/autonoma/PulgasLocas/resources/Pulga_N.png")).getImage();
     }
 
     @Override
     public void dibujar(Graphics g) {
-        // dibujar imagen normal
+        if (viva) {
+            g.drawImage(imagen, x, y, 25, 25, null); // Tamaño normal
+        }
     }
 
     @Override
