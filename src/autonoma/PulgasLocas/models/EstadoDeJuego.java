@@ -14,7 +14,7 @@ public class EstadoDeJuego {
     public static final int PAUSA = 2;
     public static final int FIN_JUEGO = 3;
 
-    private static int estadoActual = MENU_PRINCIPAL; // El juego podría empezar en el menú
+    private static int estadoActual = MENU_PRINCIPAL; 
 
     public static void cambiarEstado(int nuevoEstado) {
         System.out.println("Cambiando estado de " + getNombreEstado(estadoActual) + " a " + getNombreEstado(nuevoEstado));

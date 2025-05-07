@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
+
 package autonoma.PulgasLocas.views;
 
 import autonoma.PulgasLocas.models.CampoDeBatalla;
@@ -200,7 +197,7 @@ public class VentanaPrincipal extends JFrame {
         }
     }
 
-} // <<<--- ESTA ES LA LLAVE FINAL que cierra la clase VentanaPrincipal. Asegúrate de que esté al final y no haya nada después (excepto comentarios quizás).
+} 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

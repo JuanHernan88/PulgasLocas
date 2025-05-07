@@ -38,10 +38,7 @@ public abstract class Pulga implements Dibujable, Actualizable {
 
     @Override
     public void actualizar() {
-        // La animación se actualiza desde el CampoDeBatalla con deltaTime
-        // if (activa && sprite != null) {
-        //     sprite.actualizar(); 
-        // }
+        
     }
     
     public void saltar(int limiteX, int limiteY) {

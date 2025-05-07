@@ -4,7 +4,7 @@
  */
 package autonoma.PulgasLocas.models;
 
-import autonoma.PulgasLocas.views.VentanaPrincipal; // Para actualizar UI
+import autonoma.PulgasLocas.views.VentanaPrincipal;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -15,10 +15,10 @@ import javax.swing.Timer;
 public class SimuladorPulgas {
     public static final int ANCHO_CAMPO = 800;
     public static final int ALTO_CAMPO = 600;
-    private static final int TIEMPO_GENERACION_NORMAL = 5000; // ms (5 segundos)
-    private static final int TIEMPO_GENERACION_MUTANTE = 10000; // ms (10 segundos)
-    private static final int TIEMPO_SALTO_PULGAS = 3000; // ms (3 segundos)
-    private static final int DELAY_GAME_LOOP = 50; // ms (para aprox 20 FPS)
+    private static final int TIEMPO_GENERACION_NORMAL = 5000; // (5 segundos)
+    private static final int TIEMPO_GENERACION_MUTANTE = 10000; // (10 segundos)
+    private static final int TIEMPO_SALTO_PULGAS = 3000; // (3 segundos)
+    private static final int DELAY_GAME_LOOP = 50; // (para aprox 20 FPS)
 
     private ArrayList<Pulga> pulgas;
     private int puntaje;
@@ -31,8 +31,7 @@ public class SimuladorPulgas {
     private Timer timerGameLoop;
 
     private Random randomGenerator;
-    private VentanaPrincipal ventana; // Referencia a la ventana para actualizar UI
-
+    private VentanaPrincipal ventana; 
     // Instancias de armas (para no crearlas en cada uso)
     private PistolaPulguipium pistola;
     private MisilPulgoson misil;
@@ -107,7 +106,7 @@ public class SimuladorPulgas {
     }
 
     public void finalizarJuego() {
-        if (!enJuego) return; // Evitar múltiples finalizaciones
+        if (!enJuego) return;
 
         this.enJuego = false;
         
@@ -132,7 +131,7 @@ public class SimuladorPulgas {
     }
 
     private void agregarPulgaConColision(Pulga nuevaPulga) {
-        int intentosMax = 10; // Intentar ubicarla N veces sin colisión
+        int intentosMax = 10; 
         for (int i = 0; i < intentosMax; i++) {
             boolean colisionDetectada = false;
             for (Pulga existente : pulgas) {
@@ -149,7 +148,7 @@ public class SimuladorPulgas {
             if (!colisionDetectada) {
                 pulgas.add(nuevaPulga);
                 System.out.println("Pulga agregada en: " + nuevaPulga.getX() + "," + nuevaPulga.getY());
-                return; // Agregada exitosamente
+                return; 
             }
         }
         System.out.println("No se pudo agregar pulga sin colisión después de " + intentosMax + " intentos.");
@@ -157,8 +156,8 @@ public class SimuladorPulgas {
     
     public void agregarPulgaNormal() {
         if (!enJuego) return;
-        int x = randomGenerator.nextInt(ANCHO_CAMPO - 30); // Asumir ancho 30 para evitar borde
-        int y = randomGenerator.nextInt(ALTO_CAMPO - 30); // Asumir alto 30 para evitar borde
+        int x = randomGenerator.nextInt(ANCHO_CAMPO - 30); 
+        int y = randomGenerator.nextInt(ALTO_CAMPO - 30); 
         agregarPulgaConColision(new PulgaNormal(x, y));
     }
 
@@ -173,16 +172,16 @@ public class SimuladorPulgas {
         if (!enJuego) return;
         int eliminadas = pistola.usar(pulgas, x, y);
         if (eliminadas > 0) {
-            this.puntaje += eliminadas; // Podría ser más de 1 si la pistola se modifica
+            this.puntaje += eliminadas; 
             if (this.ventana != null) {
                 this.ventana.actualizarPuntaje(this.puntaje);
             }
         }
     }
 
-    public void usarMisilPulgoson() { // Ya no necesita x, y
+    public void usarMisilPulgoson() { 
         if (!enJuego) return;
-        int eliminadas = misil.usar(pulgas, 0, 0); // x,y son ignorados por el misil global
+        int eliminadas = misil.usar(pulgas, 0, 0); 
         if (eliminadas > 0) {
             this.puntaje += eliminadas;
              if (this.ventana != null) {
@@ -194,7 +193,7 @@ public class SimuladorPulgas {
     private void actualizarElementosDeJuego() {
         for (Pulga p : pulgas) {
             if (p.estaViva()) {
-                p.actualizar(); // Actualiza animación de sprite y cualquier otra lógica de la pulga
+                p.actualizar(); 
             }
         }
     }
@@ -204,16 +203,12 @@ public class SimuladorPulgas {
         while (iterador.hasNext()) {
             Pulga p = iterador.next();
             if (!p.estaViva()) {
-                // Aquí podrías añadir una animación de muerte si el sprite la tiene
-                // y removerla solo después de que la animación termine.
-                // Por ahora, se remueven inmediatamente.
                 iterador.remove();
                 System.out.println("Pulga muerta removida.");
             }
         }
     }
 
-    // Getters para la vista
     public ArrayList<Pulga> getPulgas() { return pulgas; }
     public int getPuntaje() { return puntaje; }
     public int getPuntajeMaximo() { return puntajeMaximo; }

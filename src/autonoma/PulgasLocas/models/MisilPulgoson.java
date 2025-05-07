@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class MisilPulgoson implements Arma {
     @Override
-    public int usar(ArrayList<Pulga> todasLasPulgas, int x, int y) { // x, y son ignorados
+    public int usar(ArrayList<Pulga> todasLasPulgas, int x, int y) { 
         
         // Filtrar solo las pulgas vivas
         List<Pulga> pulgasVivas = todasLasPulgas.stream()
@@ -26,19 +26,15 @@ public class MisilPulgoson implements Arma {
         // Calcular el 50% (redondeando hacia arriba)
         int numeroADestruir = (int) Math.ceil(pulgasVivas.size() * 0.5);
         
-        // Barajar la lista para seleccionar aleatoriamente cuáles destruir
         Collections.shuffle(pulgasVivas);
 
         int pulgasRealmenteDestruidas = 0;
-        // Iterar sobre el número de pulgas a destruir
         for (int i = 0; i < numeroADestruir && i < pulgasVivas.size(); i++) {
             Pulga pulgaSeleccionada = pulgasVivas.get(i);
-            // Usar el método destruir() para asegurar que se desactiven
             pulgaSeleccionada.destruir(); 
             pulgasRealmenteDestruidas++;
         }
-        
-        // System.out.println("Misil Pulgoson usado. Objetivo: " + numeroADestruir + ", Destruidas: " + pulgasRealmenteDestruidas);
+
         return pulgasRealmenteDestruidas; // Devuelve cuántas se destruyeron para sumar al puntaje
     }
 }

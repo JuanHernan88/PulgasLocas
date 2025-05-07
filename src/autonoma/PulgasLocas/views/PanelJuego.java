@@ -13,7 +13,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List; // Cambiado a List para el tipo de getPulgas()
+import java.util.List; 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -32,12 +32,11 @@ public class PanelJuego extends JPanel {
         // Establecer tamaño preferido usando las constantes de CampoDeBatalla
         setPreferredSize(new Dimension(CampoDeBatalla.ANCHO_CAMPO, CampoDeBatalla.ALTO_CAMPO));
         
-        // Establecer el color de fondo
-        setBackground(Color.DARK_GRAY); 
-        setOpaque(true); // Asegurarse de que el fondo se pinte
+        setBackground(Color.WHITE); 
+        setOpaque(true); 
 
-        inicializarEventos(); // Configurar el listener del ratón
-        setFocusable(true);   // Permitir que el panel reciba foco (útil para algunos eventos)
+        inicializarEventos(); 
+        setFocusable(true);   
     }
 
     /**
@@ -58,7 +57,6 @@ public class PanelJuego extends JPanel {
 
     /**
      * Método principal de dibujado del panel. Se llama automáticamente por Swing.
-     * @param g El contexto gráfico para dibujar.
      */
     @Override
     protected void paintComponent(Graphics g) {
@@ -67,25 +65,22 @@ public class PanelJuego extends JPanel {
 
         // Dibujar las pulgas
         if (campoDeBatalla != null) {
-            // Obtener la lista de pulgas (devuelve una copia para seguridad)
             List<Pulga> pulgasADibujar = campoDeBatalla.getPulgas();
             for (Pulga p : pulgasADibujar) { 
                 // Solo dibujar si la pulga está viva (activa)
                 if (p.estaViva()) { 
-                    p.dibujar(g); // Llama al método dibujar de cada pulga
+                    p.dibujar(g); 
                 }
             }
         }
 
         // Dibujar mensaje de Pausa si el juego está en ese estado
         if (EstadoDeJuego.getEstadoActual() == EstadoDeJuego.PAUSA) {
-            // Dibuja un rectángulo semitransparente
             g.setColor(new Color(0, 0, 0, 150)); 
             g.fillRect(0, getHeight() / 2 - 30, getWidth(), 60);
-            // Dibuja el texto "PAUSA"
             g.setFont(new Font("Arial", Font.BOLD, 30));
             g.setColor(Color.WHITE);
-            String textoPausa = "PAUSA (Presiona ESC para continuar)"; // Cambiado a ESC
+            String textoPausa = "PAUSA (Presiona ESC para continuar)"; 
             int anchoTexto = g.getFontMetrics().stringWidth(textoPausa);
             g.drawString(textoPausa, getWidth() / 2 - anchoTexto / 2, getHeight() / 2 + 10);
         }

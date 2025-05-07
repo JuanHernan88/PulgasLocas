@@ -8,13 +8,13 @@ import javax.swing.SwingUtilities;
 
 /**
  * Genera pulgas automáticamente en un hilo separado.
- * @author marib & AI adaptaciones
+ * @author marib 
  */
 public class GeneradorAutomatico extends Thread {
     private CampoDeBatalla campoDeBatalla;
     private volatile boolean activo;
     private long intervaloGeneracion;
-    private boolean esParaMutantes; // Para distinguir qué tipo de pulga generar
+    private boolean esParaMutantes;
 
     public GeneradorAutomatico(CampoDeBatalla campoDeBatalla, long intervaloGeneracion, boolean esParaMutantes) {
         this.campoDeBatalla = campoDeBatalla;
@@ -27,7 +27,7 @@ public class GeneradorAutomatico extends Thread {
     @Override
     public void run() {
         while (activo) {
-            if (EstadoDeJuego.getEstadoActual() == EstadoDeJuego.EN_JUEGO) { // Solo generar si está en juego
+            if (EstadoDeJuego.getEstadoActual() == EstadoDeJuego.EN_JUEGO) {
                 SwingUtilities.invokeLater(() -> {
                     if (campoDeBatalla != null && EstadoDeJuego.getEstadoActual() == EstadoDeJuego.EN_JUEGO) {
                         if (esParaMutantes) {
@@ -52,6 +52,6 @@ public class GeneradorAutomatico extends Thread {
 
     public void detenerGenerador() {
         activo = false;
-        this.interrupt(); // Interrumpir para que salga del sleep
+        this.interrupt(); 
     }
 }
