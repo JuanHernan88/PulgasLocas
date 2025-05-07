@@ -14,28 +14,57 @@ import java.awt.Image;
  * @version 1.0.0 
  */
 public abstract class Pulga {
-    protected int x, y;
-    protected Image imagen;
+    protected int x;
+    protected int y;
+    protected int velocidadX;
+    protected int velocidadY;
+    protected Sprite sprite;
+    protected boolean activa;
 
-    public Pulga(int x, int y) {
+    public Pulga(int x, int y, Sprite sprite) {
         this.x = x;
         this.y = y;
+        this.sprite = sprite;
+        this.activa = true;
     }
 
     public abstract void dibujar(Graphics g);
-    public abstract void recibirImpacto();
-    public abstract boolean estaViva();
+    public abstract boolean serImpactada(); // Método abstracto, se implementa en subclases
+
+    public boolean colisiona(Pulga otra) {
+        // Lógica de colisión (placeholder)
+        return false;
+    }
+
+    public void saltar(int mx, int maxY) {
+        // Lógica de salto (placeholder)
+    }
+
+    public void actualizar() {
+        // Lógica de actualización (placeholder)
+    }
 
     public int getX() { return x; }
     public int getY() { return y; }
-    
-    public void setX(int x) { this.x = x; }
-    public void setY(int y) { this.y = y; }
-    public boolean contienePunto(int px, int py) {
-        return estaViva() && px >= x && px <= x + 25 && py >= y && py <= y + 25;
+    public boolean estaActiva() { return activa; }
+
+    void setX(int nextInt) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    public void moverAleatoriamente(int ancho, int alto) {
-        this.x = (int) (Math.random() * ancho);
-        this.y = (int) (Math.random() * alto);
+
+    void setY(int nextInt) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    boolean estaViva() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    boolean contienePunto(int x, int y) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    void recibirImpacto() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

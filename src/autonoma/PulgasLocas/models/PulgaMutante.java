@@ -14,37 +14,24 @@ import javax.swing.ImageIcon;
  * @version 1.0.0 
  */
 public class PulgaMutante extends Pulga {
-    private int impactos;
+    private int resistencia;
 
     public PulgaMutante(int x, int y) {
-        super(x, y);
-        this.impactos = 0;
-        this.imagen = new ImageIcon(getClass().getResource("/autonoma/PulgasLocas/resources/Pulga_M.png")).getImage();
-    
+        super(x, y, GestorDeSprite.obtenerSprite("pulga_mutante"));
+        this.resistencia = 3; // Ejemplo de valor
+    }
+
+    @Override
+    public boolean serImpactada() {
+        resistencia--;
+        if (resistencia <= 0) {
+            activa = false;
+        }
+        return !activa;
     }
 
     @Override
     public void dibujar(Graphics g) {
-        if (estaViva()) {
-            g.drawImage(imagen, x, y, 30, 30, null); // Tamaño más grande
-        }
-    }
-
-    @Override
-    public void recibirImpacto() {
-        impactos++;
-    }
-
-    @Override
-    public boolean estaViva() {
-        return impactos < 2;
-    }
-    public boolean debeConvertirse() {
-        return impactos == 1;
-    }
-
-    @Override
-    public boolean contienePunto(int px, int py) {
-        return estaViva() && px >= x && px <= x + 30 && py >= y && py <= y + 30;
+        sprite.dibujar(g, x, y);
     }
 }

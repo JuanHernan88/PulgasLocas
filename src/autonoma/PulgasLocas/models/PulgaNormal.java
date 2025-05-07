@@ -14,28 +14,18 @@ import javax.swing.ImageIcon;
  * @version 1.0.0 
  */
 public class PulgaNormal extends Pulga {
-    private boolean viva;
-
     public PulgaNormal(int x, int y) {
-        super(x, y);
-        this.viva = true;
-        this.imagen = new ImageIcon(getClass().getResource("/autonoma/PulgasLocas/resources/Pulga_N.png")).getImage();
+        super(x, y, GestorDeSprite.obtenerSprite("pulga_normal"));
+    }
+
+    @Override
+    public boolean serImpactada() {
+        activa = false;
+        return true;
     }
 
     @Override
     public void dibujar(Graphics g) {
-        if (viva) {
-            g.drawImage(imagen, x, y, 25, 25, null); // Tamaño normal
-        }
-    }
-
-    @Override
-    public void recibirImpacto() {
-        viva = false;
-    }
-
-    @Override
-    public boolean estaViva() {
-        return viva;
+        sprite.dibujar(g, x, y);
     }
 }
