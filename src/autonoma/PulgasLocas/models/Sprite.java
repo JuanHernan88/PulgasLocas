@@ -4,42 +4,147 @@
  */
 package autonoma.PulgasLocas.models;
 
-import autonoma.PulgasLocas.interfaces.Dibujable;
-import autonoma.PulgasLocas.interfaces.Actualizable;
+import autonoma.PulgasLocas.interfaces.Actualizable; // Importar si se usa
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import javax.imageio.ImageIO;
 
-/**
- *
- * @author marib
- */
-public abstract class Sprite implements Dibujable, Actualizable {
-    private BufferedImage[] imagenes;
+// No necesita implementar Actualizable si la animación se maneja externamente con deltaTime
+public class Sprite /* implements Actualizable */ { 
+    private BufferedImage imagenCompleta;
+    private BufferedImage[] frames;
     private int frameActual;
-    private int velocidadAnimacion;
-    private int contador;
+    private int numeroDeFrames;
+    private long tiempoPorFrame; // En milisegundos
+    private long tiempoAcumulado; // En milisegundos
+    private int anchoFrame;
+    private int altoFrame;
+    private boolean animacionTerminada; // Para animaciones de una sola vez
 
-    public Sprite(String[] rutasImagenes) {
-        cargarImagenes(rutasImagenes);
+    // Constructor para imagen estática (CORREGIDO para aceptar BufferedImage)
+    public Sprite(BufferedImage imagen) {
+        if (imagen == null) {
+             System.err.println("Error crítico: Se intentó crear un Sprite con una imagen nula.");
+             this.imagenCompleta = null;
+             this.frames = new BufferedImage[0];
+             this.numeroDeFrames = 0;
+             this.anchoFrame = 0;
+             this.altoFrame = 0;
+        } else {
+            this.imagenCompleta = imagen;
+            this.frames = new BufferedImage[1];
+            this.frames[0] = imagen;
+            this.numeroDeFrames = 1;
+            this.anchoFrame = imagen.getWidth();
+            this.altoFrame = imagen.getHeight();
+        }
+        this.frameActual = 0;
+        this.tiempoPorFrame = Long.MAX_VALUE; // No anima
+        this.tiempoAcumulado = 0;
+        this.animacionTerminada = true; // Estática, animación "terminada"
     }
 
-    private void cargarImagenes(String[] rutasImagenes) {
-        imagenes = new BufferedImage[rutasImagenes.length];
-        for (int i = 0; i < rutasImagenes.length; i++) {
-            // Cargar imágenes
+    // Constructor para spritesheet animado (CORREGIDO con chequeos)
+    public Sprite(BufferedImage spriteSheet, int numeroDeFrames, int anchoFrame, int altoFrame, long duracionAnimacionMs) {
+        this.frameActual = 0;
+        this.tiempoAcumulado = 0;
+        this.animacionTerminada = false;
+
+         if (spriteSheet == null) {
+            System.err.println("Error crítico: Se intentó crear un Sprite animado con un spritesheet nulo.");
+            this.imagenCompleta = null;
+            this.frames = new BufferedImage[0];
+            this.numeroDeFrames = 0;
+            this.anchoFrame = 0;
+            this.altoFrame = 0;
+            this.tiempoPorFrame = Long.MAX_VALUE;
+            this.animacionTerminada = true;
+            return; // Salir del constructor si la imagen es nula
+         }
+
+        this.imagenCompleta = spriteSheet;
+        this.anchoFrame = anchoFrame;
+        this.altoFrame = altoFrame;
+        
+        if (numeroDeFrames > 0 && anchoFrame > 0 && altoFrame > 0) {
+            this.numeroDeFrames = numeroDeFrames;
+            this.frames = new BufferedImage[numeroDeFrames];
+            this.tiempoPorFrame = (duracionAnimacionMs > 0) ? (duracionAnimacionMs / numeroDeFrames) : Long.MAX_VALUE;
+
+            if (spriteSheet.getWidth() < numeroDeFrames * anchoFrame || spriteSheet.getHeight() < altoFrame) {
+                System.err.println("Error: Dimensiones del spritesheet incompatibles con los frames especificados.");
+                this.numeroDeFrames = 0; // Marcar como inválido
+                this.frames = new BufferedImage[0];
+                this.tiempoPorFrame = Long.MAX_VALUE;
+            } else {
+                for (int i = 0; i < numeroDeFrames; i++) {
+                    try {
+                        this.frames[i] = spriteSheet.getSubimage(i * anchoFrame, 0, anchoFrame, altoFrame);
+                    } catch (Exception e) {
+                        System.err.println("Error extrayendo frame " + i + " del spritesheet: " + e.getMessage());
+                        // Podrías poner una imagen por defecto en frames[i]
+                    }
+                }
+            }
+        } else {
+             // Tratar como estático si los parámetros no son válidos para animación
+             System.err.println("Advertencia: Parámetros de animación inválidos, tratando como sprite estático.");
+             this.frames = new BufferedImage[1];
+             this.frames[0] = spriteSheet.getSubimage(0, 0, Math.min(anchoFrame, spriteSheet.getWidth()), Math.min(altoFrame, spriteSheet.getHeight()));
+             this.numeroDeFrames = 1;
+             this.tiempoPorFrame = Long.MAX_VALUE;
         }
     }
 
-    @Override
+    // Método para actualizar basado en tiempo delta (llamado desde el game loop)
+    public void actualizarAnimacion(long deltaTime) { // deltaTime en milisegundos
+        if (numeroDeFrames <= 1 || animacionTerminada) return;
+
+        tiempoAcumulado += deltaTime;
+        while (tiempoAcumulado >= tiempoPorFrame && tiempoPorFrame > 0) { // Usar while por si deltaTime es muy grande
+            tiempoAcumulado -= tiempoPorFrame;
+            frameActual++;
+            if (frameActual >= numeroDeFrames) {
+                // Por ahora, solo animaciones cíclicas. Podría añadirse lógica para 'animacionUnicaVez'.
+                frameActual = 0; 
+            }
+        }
+    }
+
+    // @Override // Quitado porque la animación se maneja con deltaTime desde fuera
     public void actualizar() {
-        contador++;
-        if (contador >= velocidadAnimacion) {
-            frameActual = (frameActual + 1) % imagenes.length;
-            contador = 0;
-        }
+        // No hacer nada aquí si la actualización depende de deltaTime
     }
 
     public void dibujar(Graphics g, int x, int y) {
-        g.drawImage(imagenes[frameActual], x, y, null);
+        if (frames != null && frameActual >= 0 && frameActual < frames.length && frames[frameActual] != null) {
+            g.drawImage(frames[frameActual], x, y, null);
+        } else if (imagenCompleta != null && numeroDeFrames <=1) {
+             g.drawImage(imagenCompleta, x, y, null);
+        }
+    }
+
+    public void dibujar(Graphics g, int x, int y, int ancho, int alto) {
+         if (frames != null && frameActual >= 0 && frameActual < frames.length && frames[frameActual] != null) {
+            g.drawImage(frames[frameActual], x, y, ancho, alto, null);
+        } else if (imagenCompleta != null && numeroDeFrames <=1) {
+            g.drawImage(imagenCompleta, x, y, ancho, alto, null);
+        }
+    }
+    
+    public void resetAnimacion() {
+        this.frameActual = 0;
+        this.tiempoAcumulado = 0;
+        this.animacionTerminada = false;
+    }
+
+    public int getAncho() {
+        return anchoFrame;
+    }
+
+    public int getAlto() {
+        return altoFrame;
     }
 }

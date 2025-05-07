@@ -4,67 +4,88 @@
  */
 package autonoma.PulgasLocas.models;
 
+import autonoma.PulgasLocas.interfaces.Actualizable;
+import autonoma.PulgasLocas.interfaces.Dibujable;
 import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.Rectangle;
+import java.util.Random;
 
-/*
- * 
- * @author Juan Esteban Hernández Martínez
- * @since 20250505
- * @version 1.0.0 
- */
-public abstract class Pulga {
+public abstract class Pulga implements Dibujable, Actualizable {
     protected int x;
     protected int y;
-    protected int velocidadX;
-    protected int velocidadY;
     protected Sprite sprite;
     protected boolean activa;
+    protected static Random random = new Random();
 
     public Pulga(int x, int y, Sprite sprite) {
         this.x = x;
         this.y = y;
         this.sprite = sprite;
         this.activa = true;
+        if (this.sprite == null) {
+            System.err.println("Error crítico: Se intentó crear una Pulga con un Sprite nulo.");
+        }
     }
 
-    public abstract void dibujar(Graphics g);
-    public abstract boolean serImpactada(); // Método abstracto, se implementa en subclases
+    public abstract void recibirImpacto();
+
+    @Override
+    public void dibujar(Graphics g) {
+        if (activa && sprite != null) {
+            sprite.dibujar(g, this.x, this.y, sprite.getAncho(), sprite.getAlto());
+        }
+    }
+
+    @Override
+    public void actualizar() {
+        // La animación se actualiza desde el CampoDeBatalla con deltaTime
+        // if (activa && sprite != null) {
+        //     sprite.actualizar(); 
+        // }
+    }
+    
+    public void saltar(int limiteX, int limiteY) {
+        if (!activa || sprite == null) return;
+        
+        int anchoPulga = sprite.getAncho();
+        int altoPulga = sprite.getAlto();
+
+        if (limiteX > anchoPulga) {
+            this.x = random.nextInt(limiteX - anchoPulga);
+        } else {
+            this.x = 0; 
+        }
+        if (limiteY > altoPulga) {
+            this.y = random.nextInt(limiteY - altoPulga);
+        } else {
+            this.y = 0;
+        }
+    }
 
     public boolean colisiona(Pulga otra) {
-        // Lógica de colisión (placeholder)
-        return false;
+        if (!this.activa || !otra.estaViva() || this.sprite == null || otra.sprite == null) return false;
+        return getBounds().intersects(otra.getBounds());
     }
 
-    public void saltar(int mx, int maxY) {
-        // Lógica de salto (placeholder)
+    public boolean contienePunto(int px, int py) {
+        if (!this.activa || this.sprite == null) return false;
+        return getBounds().contains(px, py);
+    }
+    
+    public Rectangle getBounds() {
+        if (this.sprite == null) return new Rectangle(this.x, this.y, 0, 0);
+        return new Rectangle(this.x, this.y, sprite.getAncho(), sprite.getAlto());
     }
 
-    public void actualizar() {
-        // Lógica de actualización (placeholder)
+    public void destruir() {
+        this.activa = false;
     }
 
     public int getX() { return x; }
     public int getY() { return y; }
-    public boolean estaActiva() { return activa; }
-
-    void setX(int nextInt) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    void setY(int nextInt) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    boolean estaViva() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    boolean contienePunto(int x, int y) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    void recibirImpacto() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    public Sprite getSprite(){ return sprite; }
+    public boolean estaViva() { return activa; }
+    public void setX(int x) { this.x = x; }
+    public void setY(int y) { this.y = y; }
+    public void setActiva(boolean activa) { this.activa = activa; }
 }

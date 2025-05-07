@@ -4,34 +4,32 @@
  */
 package autonoma.PulgasLocas.models;
 
-import java.awt.Graphics;
-import javax.swing.ImageIcon;
-
-/*
- * 
- * @author Juan Esteban Hernández Martínez
- * @since 20250505
- * @version 1.0.0 
- */
 public class PulgaMutante extends Pulga {
-    private int resistencia;
+    private boolean transformada;
 
     public PulgaMutante(int x, int y) {
-        super(x, y, GestorDeSprite.obtenerSprite("pulga_mutante"));
-        this.resistencia = 3; // Ejemplo de valor
+        super(x, y, GestorDeSprite.obtenerSprite(GestorDeSprite.PULGA_MUTANTE_SPRITE_KEY));
+        this.transformada = false;
     }
 
     @Override
-    public boolean serImpactada() {
-        resistencia--;
-        if (resistencia <= 0) {
-            activa = false;
+    public void recibirImpacto() {
+        if (!activa) return;
+
+        if (!transformada) {
+            this.transformada = true;
+            this.sprite = GestorDeSprite.obtenerSprite(GestorDeSprite.PULGA_NORMAL_SPRITE_KEY); 
+            if (this.sprite != null) {
+                this.sprite.resetAnimacion();
+            } else {
+                 System.err.println("Error: Sprite PULGA_NORMAL no encontrado para transformación de PulgaMutante.");
+            }
+        } else {
+            this.activa = false;
         }
-        return !activa;
     }
-
-    @Override
-    public void dibujar(Graphics g) {
-        sprite.dibujar(g, x, y);
+    
+    public boolean isTransformada(){
+        return this.transformada;
     }
 }

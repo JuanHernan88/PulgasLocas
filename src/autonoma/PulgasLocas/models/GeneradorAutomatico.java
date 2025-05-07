@@ -4,32 +4,54 @@
  */
 package autonoma.PulgasLocas.models;
 
+import javax.swing.SwingUtilities;
+
 /**
- *
- * @author marib
+ * Genera pulgas automáticamente en un hilo separado.
+ * @author marib & AI adaptaciones
  */
 public class GeneradorAutomatico extends Thread {
-    private SimuladorPulgas simulador;
-    private boolean activo;
+    private CampoDeBatalla campoDeBatalla;
+    private volatile boolean activo;
+    private long intervaloGeneracion;
+    private boolean esParaMutantes; // Para distinguir qué tipo de pulga generar
 
-    public GeneradorAutomatico(SimuladorPulgas simulador) {
-        this.simulador = simulador;
+    public GeneradorAutomatico(CampoDeBatalla campoDeBatalla, long intervaloGeneracion, boolean esParaMutantes) {
+        this.campoDeBatalla = campoDeBatalla;
         this.activo = true;
+        this.intervaloGeneracion = intervaloGeneracion;
+        this.esParaMutantes = esParaMutantes;
+        setName("GeneradorAutomaticoPulgas-" + (esParaMutantes ? "Mutante" : "Normal")); 
     }
 
     @Override
     public void run() {
         while (activo) {
-            simulador.agregarPulgaNormal();
+            if (EstadoDeJuego.getEstadoActual() == EstadoDeJuego.EN_JUEGO) { // Solo generar si está en juego
+                SwingUtilities.invokeLater(() -> {
+                    if (campoDeBatalla != null && EstadoDeJuego.getEstadoActual() == EstadoDeJuego.EN_JUEGO) {
+                        if (esParaMutantes) {
+                            campoDeBatalla.agregarPulgaMutante();
+                        } else {
+                            campoDeBatalla.agregarPulgaNormal();
+                        }
+                    }
+                });
+            }
+            
             try {
-                Thread.sleep(2000); // Espera 2 segundos
+                Thread.sleep(intervaloGeneracion);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                System.out.println(getName() + " interrumpido.");
+                activo = false; 
+                Thread.currentThread().interrupt(); 
             }
         }
+        System.out.println(getName() + " detenido.");
     }
 
-    public void detener() {
+    public void detenerGenerador() {
         activo = false;
+        this.interrupt(); // Interrumpir para que salga del sleep
     }
 }

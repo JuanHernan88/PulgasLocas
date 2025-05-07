@@ -3,11 +3,26 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/marib/OneDrive/Documents/NetBeansProjects/PulgasLocas/src/autonoma/PulgasLocas/models/PulgaMutante.java</file>
-            <file>file:/C:/Users/marib/OneDrive/Documents/NetBeansProjects/PulgasLocas/src/autonoma/PulgasLocas/models/PulgaNormal.java</file>
-            <file>file:/C:/Users/marib/OneDrive/Documents/NetBeansProjects/PulgasLocas/src/autonoma/PulgasLocas/main/SimuladorDePulgas.java</file>
-            <file>file:/C:/Users/marib/OneDrive/Documents/NetBeansProjects/PulgasLocas/src/autonoma/PulgasLocas/models/Pulga.java</file>
-            <file>file:/C:/Users/marib/OneDrive/Documents/NetBeansProjects/PulgasLocas/src/autonoma/PulgasLocas/models/CampoDeBatalla.java</file>
+            <file>file:/C:/Users/juanl/Desktop/POO/PulgasLocas/src/autonoma/PulgasLocas/models/MisilPulgoson.java</file>
+            <file>file:/C:/Users/juanl/Desktop/POO/PulgasLocas/src/autonoma/PulgasLocas/models/Pulga.java</file>
+            <file>file:/C:/Users/juanl/Desktop/POO/PulgasLocas/src/autonoma/PulgasLocas/interfaces/Dibujable.java</file>
+            <file>file:/C:/Users/juanl/Desktop/POO/PulgasLocas/src/autonoma/PulgasLocas/interfaces/Actualizable.java</file>
+            <file>file:/C:/Users/juanl/Desktop/POO/PulgasLocas/src/autonoma/PulgasLocas/main/Main.java</file>
+            <file>file:/C:/Users/juanl/Desktop/POO/PulgasLocas/src/autonoma/PulgasLocas/models/SimuladorPulgas.java</file>
+            <file>file:/C:/Users/juanl/Desktop/POO/PulgasLocas/src/autonoma/PulgasLocas/models/PulgaNormal.java</file>
+            <file>file:/C:/Users/juanl/Desktop/POO/PulgasLocas/src/autonoma/PulgasLocas/resources/Pulga_N.png</file>
+            <file>file:/C:/Users/juanl/Desktop/POO/PulgasLocas/src/autonoma/PulgasLocas/views/PanelJuego.java</file>
+            <file>file:/C:/Users/juanl/Desktop/POO/PulgasLocas/src/autonoma/PulgasLocas/models/PulgaMutante.java</file>
+            <file>file:/C:/Users/juanl/Desktop/POO/PulgasLocas/src/autonoma/PulgasLocas/models/EstadoDeJuego.java</file>
+            <file>file:/C:/Users/juanl/Desktop/POO/PulgasLocas/src/autonoma/PulgasLocas/views/VentanaPrincipal.java</file>
+            <file>file:/C:/Users/juanl/Desktop/POO/PulgasLocas/src/autonoma/PulgasLocas/models/PistolaPulguipium.java</file>
+            <file>file:/C:/Users/juanl/Desktop/POO/PulgasLocas/src/autonoma/PulgasLocas/models/GestorDeSprite.java</file>
+            <file>file:/C:/Users/juanl/Desktop/POO/PulgasLocas/src/autonoma/PulgasLocas/models/GestorDeArchivos.java</file>
+            <file>file:/C:/Users/juanl/Desktop/POO/PulgasLocas/src/autonoma/PulgasLocas/models/Sprite.java</file>
+            <file>file:/C:/Users/juanl/Desktop/POO/PulgasLocas/src/autonoma/PulgasLocas/resources/Pulga_M.png</file>
+            <file>file:/C:/Users/juanl/Desktop/POO/PulgasLocas/src/autonoma/PulgasLocas/interfaces/Arma.java</file>
+            <file>file:/C:/Users/juanl/Desktop/POO/PulgasLocas/src/autonoma/PulgasLocas/models/CampoDeBatalla.java</file>
+            <file>file:/C:/Users/juanl/Desktop/POO/PulgasLocas/src/autonoma/PulgasLocas/models/GeneradorAutomatico.java</file>
         </group>
     </open-files>
 </project-private>
