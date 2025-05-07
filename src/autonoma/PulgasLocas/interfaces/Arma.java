@@ -2,14 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
-package autonoma.PulgasLocas.models;
+package autonoma.PulgasLocas.interfaces;
 
-import java.awt.Graphics;
+import autonoma.PulgasLocas.models.Pulga;
+import java.util.ArrayList;
 
 /**
  *
  * @author marib
  */
-public interface Dibujable {
-    void dibujar(Graphics g);
+public interface Arma {
+    int usar(ArrayList<Pulga> pulgas, int x, int y);
 }

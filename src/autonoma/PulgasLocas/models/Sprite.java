@@ -4,6 +4,8 @@
  */
 package autonoma.PulgasLocas.models;
 
+import autonoma.PulgasLocas.interfaces.Dibujable;
+import autonoma.PulgasLocas.interfaces.Actualizable;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 

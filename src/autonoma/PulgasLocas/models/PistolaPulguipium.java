@@ -4,6 +4,7 @@
  */
 package autonoma.PulgasLocas.models;
 
+import autonoma.PulgasLocas.interfaces.Arma;
 import java.util.ArrayList;
 
 /**
