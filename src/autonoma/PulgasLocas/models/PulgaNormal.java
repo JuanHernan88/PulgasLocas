@@ -8,6 +8,8 @@ public class PulgaNormal extends Pulga {
 
     public PulgaNormal(int x, int y) {
         super(x, y, GestorDeSprite.obtenerSprite(GestorDeSprite.PULGA_NORMAL_SPRITE_KEY));
+        this.dx = random.nextInt(11) - 5; // velocidad aleatoria entre 1 y 5
+        this.dy = random.nextInt(11) - 5;
     }
 
     @Override

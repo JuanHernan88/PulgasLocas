@@ -1,4 +1,3 @@
-
 package autonoma.PulgasLocas.views;
 
 import autonoma.PulgasLocas.models.CampoDeBatalla;

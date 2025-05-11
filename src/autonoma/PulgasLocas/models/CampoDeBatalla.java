@@ -29,7 +29,7 @@ public class CampoDeBatalla {
     // Tiempos de generación (en milisegundos)
     private static final int TIEMPO_GENERACION_NORMAL_MS = 5000; 
     private static final int TIEMPO_GENERACION_MUTANTE_MS = 10000; 
-    private static final int TIEMPO_SALTO_PULGAS_MS = 3000;
+    private static final int TIEMPO_SALTO_PULGAS_MS = 7000;
     private static final int DELAY_GAME_LOOP_MS = 50; 
 
     // Usamos GeneradorAutomatico (Threads) para añadir pulgas
@@ -277,52 +277,37 @@ public class CampoDeBatalla {
      * @param y Coordenada Y del clic.
      */
     public void dispararPistola(int x, int y) {
-        if (EstadoDeJuego.getEstadoActual() != EstadoDeJuego.EN_JUEGO) return;
+    if (EstadoDeJuego.getEstadoActual() != EstadoDeJuego.EN_JUEGO) return;
 
-        for (Pulga p : pulgas) { 
-            if (p.estaViva() && p.contienePunto(x, y)) {
-                boolean estabaVivaAntes = p.estaViva();
-                p.recibirImpacto();
+    // 🔊 Reproducir sonido de disparo
+    ReproductorSonido.reproducir("M40A3.wav");
 
-                if (estabaVivaAntes && !p.estaViva()) {
-                    puntaje++;
-                }
+    for (Pulga p : pulgas) {
+        if (p.estaViva() && p.contienePunto(x, y)) {
+            boolean estabaVivaAntes = p.estaViva();
+            p.recibirImpacto();
 
-                if (ventana != null) ventana.actualizarPuntaje(this.puntaje);
-                
-                break;
+            if (estabaVivaAntes && !p.estaViva()) {
+                puntaje++;
             }
+
+            if (ventana != null) ventana.actualizarPuntaje(this.puntaje);
+            break; // Solo impacta a una pulga por disparo
         }
     }
+}
 
     /**
      * Aplica el efecto del misil (destruye 50% de pulgas vivas aleatoriamente).
      */
     public void lanzarMisil() {
         if (EstadoDeJuego.getEstadoActual() != EstadoDeJuego.EN_JUEGO) return;
-        
-        List<Pulga> vivas = new ArrayList<>();
-        for(Pulga p : pulgas){
-            if(p.estaViva()){
-                vivas.add(p);
-            }
-        }
-        if (vivas.isEmpty()) return;
 
-        int numeroADestruir = (int) Math.ceil(vivas.size() * 0.5);
-        java.util.Collections.shuffle(vivas); 
+        MisilPulgoson misil = new MisilPulgoson();
+        int destruidas = misil.usar(new ArrayList<>(pulgas), 0, 0);
 
-        int pulgasRealmenteDestruidas = 0;
-        for (int i = 0; i < numeroADestruir && i < vivas.size(); i++) {
-            Pulga pulgaSeleccionada = vivas.get(i);
-            if(pulgaSeleccionada.estaViva()){ 
-                 pulgaSeleccionada.destruir();
-                 pulgasRealmenteDestruidas++;
-            }
-        }
-        
-        if(pulgasRealmenteDestruidas > 0) {
-            this.puntaje += pulgasRealmenteDestruidas;
+        if (destruidas > 0) {
+            this.puntaje += destruidas;
             if (ventana != null) ventana.actualizarPuntaje(this.puntaje);
         }
     }

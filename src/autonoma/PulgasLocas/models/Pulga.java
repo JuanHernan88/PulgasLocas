@@ -13,15 +13,27 @@ import java.util.Random;
 public abstract class Pulga implements Dibujable, Actualizable {
     protected int x;
     protected int y;
+    protected int tamaño = 20;
     protected Sprite sprite;
     protected boolean activa;
+    protected CampoDeBatalla campo;
     protected static Random random = new Random();
+    protected int dx;
+    protected int dy;
 
     public Pulga(int x, int y, Sprite sprite) {
         this.x = x;
         this.y = y;
         this.sprite = sprite;
         this.activa = true;
+        do {
+            this.dx = random.nextInt(7) - 3; // -3 a +3
+        } while (dx == 0);
+
+        do {
+            this.dy = random.nextInt(7) - 3;
+        } while (dy == 0);
+
         if (this.sprite == null) {
             System.err.println("Error crítico: Se intentó crear una Pulga con un Sprite nulo.");
         }
@@ -38,7 +50,9 @@ public abstract class Pulga implements Dibujable, Actualizable {
 
     @Override
     public void actualizar() {
-        
+        if (!activa || sprite == null) return;
+
+        mover();
     }
     
     public void saltar(int limiteX, int limiteY) {
@@ -56,6 +70,22 @@ public abstract class Pulga implements Dibujable, Actualizable {
             this.y = random.nextInt(limiteY - altoPulga);
         } else {
             this.y = 0;
+        }
+        
+        ReproductorSonido.reproducir("boing.wav");
+        
+    }
+    
+    public void mover() {
+        x += dx;
+        y += dy;
+
+        // Rebote en los bordes
+        if (x <= 0 || x + sprite.getAncho() >= CampoDeBatalla.ANCHO_CAMPO) {
+            dx = -dx;
+        }
+        if (y <= 0 || y + sprite.getAlto() >= CampoDeBatalla.ALTO_CAMPO){
+            dy = -dy;
         }
     }
 

@@ -22,6 +22,8 @@ public class MisilPulgoson implements Arma {
         if (pulgasVivas.isEmpty()) {
             return 0; // No hay pulgas vivas para destruir
         }
+        
+        ReproductorSonido.reproducir("bomba.wav");
 
         // Calcular el 50% (redondeando hacia arriba)
         int numeroADestruir = (int) Math.ceil(pulgasVivas.size() * 0.5);

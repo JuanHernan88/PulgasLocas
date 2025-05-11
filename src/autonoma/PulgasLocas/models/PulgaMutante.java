@@ -10,6 +10,8 @@ public class PulgaMutante extends Pulga {
     public PulgaMutante(int x, int y) {
         super(x, y, GestorDeSprite.obtenerSprite(GestorDeSprite.PULGA_MUTANTE_SPRITE_KEY));
         this.transformada = false;
+        this.dx = random.nextInt(11) - 5;
+        this.dy = random.nextInt(11) - 5;
     }
 
     @Override

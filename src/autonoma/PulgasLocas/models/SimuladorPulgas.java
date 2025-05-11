@@ -193,7 +193,8 @@ public class SimuladorPulgas {
     private void actualizarElementosDeJuego() {
         for (Pulga p : pulgas) {
             if (p.estaViva()) {
-                p.actualizar(); 
+                p.mover();       // ← hace que se desplacen
+                p.actualizar();  // ← si tienen lógica de animación o cambio interno
             }
         }
     }

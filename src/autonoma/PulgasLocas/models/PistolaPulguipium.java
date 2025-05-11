@@ -13,16 +13,17 @@ public class PistolaPulguipium implements Arma {
         for (Pulga p : pulgas) {
             if (p.estaViva() && p.contienePunto(x, y)) {
                 boolean estabaVivaAntes = p.estaViva(); 
-                p.recibirImpacto();                     
+                p.recibirImpacto();   
                 
-                if (estabaVivaAntes && !p.estaViva()) { 
-                    return 1; 
+                // Reproduce el sonido siempre que impacta una pulga
+                ReproductorSonido.reproducir("cachetada.wav");
+                
+                if (estabaVivaAntes && !p.estaViva()) {
+                    return 1;
                 }
-                // Si fue impactada pero no murió (ej. mutante se transformó), no suma punto.
-                // La función del arma termina al impactar la primera pulga.
-                return 0; 
+                return 0;
             }
         }
         return 0;
     }
-} 
+}
