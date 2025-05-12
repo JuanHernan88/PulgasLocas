@@ -15,8 +15,7 @@ public class PistolaPulguipium implements Arma {
                 boolean estabaVivaAntes = p.estaViva(); 
                 p.recibirImpacto();   
                 
-                // Reproduce el sonido siempre que impacta una pulga
-                ReproductorSonido.reproducir("cachetada.wav");
+
                 
                 if (estabaVivaAntes && !p.estaViva()) {
                     return 1;

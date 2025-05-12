@@ -15,15 +15,12 @@ public class MisilPulgoson implements Arma {
     public int usar(ArrayList<Pulga> todasLasPulgas, int x, int y) { 
         
         // Filtrar solo las pulgas vivas
-        List<Pulga> pulgasVivas = todasLasPulgas.stream()
-                                             .filter(Pulga::estaViva)
-                                             .collect(Collectors.toList());
+        List<Pulga> pulgasVivas = todasLasPulgas.stream().filter(Pulga::estaViva).collect(Collectors.toList());
 
         if (pulgasVivas.isEmpty()) {
             return 0; // No hay pulgas vivas para destruir
         }
         
-        ReproductorSonido.reproducir("bomba.wav");
 
         // Calcular el 50% (redondeando hacia arriba)
         int numeroADestruir = (int) Math.ceil(pulgasVivas.size() * 0.5);
